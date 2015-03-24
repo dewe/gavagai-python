@@ -1,6 +1,11 @@
 .DS_Store
 venv/
 
+# Python
+*.pyc
+*.pyo
+__pycache__
+
 # Distribution / packaging
 .Python
 env/
