@@ -5,5 +5,18 @@ def test_constructor_apikey():
 	assert client.apikey == "this_is_a_fake_apikey"
 
 def test_default_host():
-	client = GavagaiClient("fake_apikey")
+	client = GavagaiClient("x")
 	assert client.host == "https://api.gavagai.se"
+
+def test_default_api_version():
+	client = GavagaiClient("x")
+	assert client.api_version == "v3"
+
+def test_base_url():
+	client = GavagaiClient("x")
+	assert client.base_url() == "https://api.gavagai.se/v3"
+
+def test_custom_host():
+	client = GavagaiClient("x", host="http://example.com")
+	assert client.base_url() == "http://example.com/v3"
+	assert client.host == "http://example.com"
