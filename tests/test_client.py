@@ -1,5 +1,8 @@
 import os
+import pytest
 from gavagai.client import GavagaiClient
+from gavagai.exceptions import GavagaiException
+
 
 def test_constructor_apikey():
     client = GavagaiClient('this_is_a_fake_apikey')
@@ -26,11 +29,18 @@ def test_custom_host():
     assert client.base_url() == 'http://example.com/v3'
     assert client.host == 'http://example.com'
 
+
 def test_environment_variable():
     old_apikey = os.environ['GAVAGAI_APIKEY']
     os.environ['GAVAGAI_APIKEY'] = 'foo'
-
     client = GavagaiClient()
     assert client.apikey == 'foo'
-
     os.environ['GAVAGAI_APIKEY'] = old_apikey
+
+
+def test_no_apikey():
+    old_apikey = os.environ['GAVAGAI_APIKEY']
+    del os.environ['GAVAGAI_APIKEY']
+    with pytest.raises(GavagaiException):
+        GavagaiClient()
+    os.environ['GAVAGAI_APIKEY'] = old_apikey;

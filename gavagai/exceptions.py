@@ -1,0 +1,2 @@
+class GavagaiException(Exception):
+	pass
