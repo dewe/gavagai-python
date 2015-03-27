@@ -1,4 +1,5 @@
 import os
+import requests
 from exceptions import GavagaiException
 
 class GavagaiClient(object):
@@ -20,4 +21,8 @@ class GavagaiClient(object):
 
     def base_url(self):
         return self.host + '/' + self.api_version
+
+    def request(self, path, method='post', body=None):
+        url = self.base_url() + '/' + path + '?apiKey=' + self.apikey
+        return requests.request(method, url, json=body)
         
