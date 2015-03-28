@@ -9,15 +9,15 @@ class GavagaiClient(object):
         super(GavagaiClient, self).__init__()
 
         self.apikey = apikey
+        self.host = host
+        self.api_version = api_version
+
         if not self.apikey:
             try:
                 self.apikey = os.environ['GAVAGAI_APIKEY']
             except KeyError:
                 raise GavagaiException('GavagaiClient requires an apikey set explicitly \
                                         or via the GAVAGAI_APIKEY environment variable')
-
-        self.host = host
-        self.api_version = api_version
 
     def base_url(self):
         return self.host + '/' + self.api_version
