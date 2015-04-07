@@ -1,5 +1,6 @@
 import pytest
 import httpretty
+from requests import ConnectionError
 from gavagai.client import GavagaiClient
 from gavagai.exceptions import GavagaiHttpException
 
@@ -38,11 +39,27 @@ def test_empty_response():
 
 
 @httpretty.activate
-def test_default_error_if_no_error_message_from_api():
+def test_default_exception_value_if_no_error_message_from_api():
     httpretty.register_uri(httpretty.GET, 'https://api.gavagai.se/v3/test', status=500, body=None)
 
     client = GavagaiClient('foo')
     with pytest.raises(GavagaiHttpException) as ex:
         client.request('test', method='get')
     assert 'Unable to complete HTTP request' in ex.value
+
+
+@httpretty.activate
+def test_connection_error_exception_on_host_unreachable():
+    client = GavagaiClient('x', host='http://unreachablehost')
+    with pytest.raises(ConnectionError):
+        client.request('test', method='get')
+
+#it('should return error on host unreachable', function (done) {
+#       nock(client.host).get('/unreachable_path');
+
+#       client.request({method: 'GET', url: '/test'}, function (err, data) {
+#           assert.match(err.message, /Unable to reach host:/);
+#           done();
+#       });
+#   });
 
