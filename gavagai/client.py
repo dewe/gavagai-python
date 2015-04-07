@@ -1,6 +1,6 @@
 import os
 import requests
-from exceptions import GavagaiException
+from exceptions import GavagaiException, GavagaiHttpException
 
 class GavagaiClient(object):
     """Client for Gavagai Rest API"""
@@ -24,5 +24,10 @@ class GavagaiClient(object):
 
     def request(self, path, method='post', body=None):
         url = self.base_url() + '/' + path + '?apiKey=' + self.apikey
-        return requests.request(method, url, json=body)
+        res = requests.request(method, url, json=body)
+        
+        if res.status_code < 200 or res.status_code > 206:
+            raise GavagaiHttpException('Unable to complete HTTP request')
+        
+        return res
         

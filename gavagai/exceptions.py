@@ -1,2 +1,6 @@
 class GavagaiException(Exception):
-	pass
+    pass
+
+
+class GavagaiHttpException(Exception):
+    pass
