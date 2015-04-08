@@ -27,7 +27,10 @@ class GavagaiClient(object):
         res = requests.request(method, url, json=body)
         
         if res.status_code < 200 or res.status_code > 206:
-            raise GavagaiHttpException('Unable to complete HTTP request')
+            message = 'Unable to complete HTTP request'
+            if res.text:
+                message = res.text
+            raise GavagaiHttpException(res.status_code, message)
         
         return res
         
