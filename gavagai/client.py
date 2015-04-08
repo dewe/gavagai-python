@@ -2,6 +2,16 @@ import os
 import requests
 from exceptions import GavagaiException, GavagaiHttpException
 
+
+def ensure_text_objects(texts):
+    text_objects = texts[:]
+    for i in range(len(text_objects)):
+        text = text_objects[i]
+        if isinstance(text, unicode) or isinstance(text, basestring):
+            text_objects[i] = { 'id': unicode(i), 'body': unicode(text) }
+    return text_objects
+
+
 class GavagaiClient(object):
     """Client for Gavagai Rest API"""
     
@@ -22,15 +32,23 @@ class GavagaiClient(object):
     def base_url(self):
         return self.host + '/' + self.api_version
 
-    def request(self, path, method='post', body=None):
+#TODO: test for path with/without leading /
+    def request(self, path, method='post', body=None, allow_redirects=False):
         url = self.base_url() + '/' + path + '?apiKey=' + self.apikey
-        res = requests.request(method, url, json=body)
-        
+
+        res = requests.request(method, url, json=body, allow_redirects=allow_redirects)
         if res.status_code < 200 or res.status_code > 206:
-            message = 'Unable to complete HTTP request'
-            if res.text:
-                message = res.text
+            message = res.text or 'Unable to complete HTTP request'
             raise GavagaiHttpException(res.status_code, message)
         
         return res
-        
+    
+    def keywords(self, texts, **kwargs):
+        if isinstance(texts, list):
+            texts = ensure_text_objects(texts)
+        body = {
+            'language': 'en',
+            'texts': texts
+        }
+        body.update(kwargs)
+        return self.request('keywords', 'post', body)
