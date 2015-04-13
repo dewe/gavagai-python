@@ -51,3 +51,11 @@ class GavagaiClient(object):
         body.update(kwargs)
         body['texts'] = ensure_text_objects(texts)
         return self.request('keywords', 'post', body)
+
+    def tonality(self, texts, **kwargs):
+        if not isinstance(texts, list):
+            raise ValueError('Argument texts is expected to be a list.')
+        body = dict(language='en') 
+        body.update(kwargs)
+        body['texts'] = ensure_text_objects(texts)
+        return self.request('tonality', 'post', body)
