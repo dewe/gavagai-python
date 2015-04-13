@@ -1,5 +1,6 @@
 import os
 import requests
+from urlparse import urljoin
 from exceptions import GavagaiException, GavagaiHttpException
 
 
@@ -32,8 +33,8 @@ class GavagaiClient(object):
     def base_url(self):
         return self.host + '/' + self.api_version
 
-#TODO: test for path with/without leading /
     def request(self, path, method='post', body=None, allow_redirects=False):
+        path = path.strip('/')
         url = self.base_url() + '/' + path + '?apiKey=' + self.apikey
 
         res = requests.request(method, url, json=body, allow_redirects=allow_redirects)

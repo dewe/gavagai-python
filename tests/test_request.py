@@ -27,6 +27,15 @@ def test_default_method_post():
 
 
 @httpretty.activate
+def test_path_with_slashes():
+    httpretty.register_uri(httpretty.POST, 'https://api.gavagai.se/v3/test')
+    client = GavagaiClient('foo')
+    path = '/test/'
+    response = client.request(path)
+    assert response.status_code == 200
+
+
+@httpretty.activate
 def test_empty_response():
     httpretty.register_uri(httpretty.GET, 'https://api.gavagai.se/v3/test', status=204)
     client = GavagaiClient('foo')
