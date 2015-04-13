@@ -10,4 +10,3 @@ class GavagaiHttpException(Exception):
         super(GavagaiHttpException, self).__init__('{}: {}'.format(status_code, message))
         self.status_code = status_code
         self.message = message
-

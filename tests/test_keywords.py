@@ -41,7 +41,7 @@ def test_input_list_of_text_objects(client, texts):
     assert 'body' in text_objects[0]
 
 
-def test_input_list_of_strings(client, texts):
+def test_input_list_of_strings(client):
     client.keywords(['this is a text', 'this is text 2', 'this is the third text'])
     body = json.loads(httpretty.last_request().body)
     assert body['texts'][2]['body'] == 'this is the third text'
@@ -62,4 +62,9 @@ def test_custom_options_as_dictionary(client, texts):
     client.keywords(texts, **options)    
     body = json.loads(httpretty.last_request().body)
     assert body['language'] == 'no'
-    assert body['anotherOption'] == 4711 
+    assert body['anotherOption'] == 4711
+
+
+def test_throw_if_texts_not_a_list(client):
+    with pytest.raises(ValueError):
+        client.keywords('this is not a list')

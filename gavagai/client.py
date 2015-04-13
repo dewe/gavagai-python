@@ -44,11 +44,9 @@ class GavagaiClient(object):
         return res
     
     def keywords(self, texts, **kwargs):
-        if isinstance(texts, list):
-            texts = ensure_text_objects(texts)
-        body = {
-            'language': 'en',
-            'texts': texts
-        }
+        if not isinstance(texts, list):
+            raise ValueError('Argument texts is expected to be a list.')
+        body = dict(language='en') 
         body.update(kwargs)
+        body['texts'] = ensure_text_objects(texts)
         return self.request('keywords', 'post', body)
