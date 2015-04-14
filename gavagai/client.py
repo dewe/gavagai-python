@@ -7,11 +7,12 @@ from exceptions import GavagaiException, GavagaiHttpException
 class GavagaiClient(object):
     """Client for Gavagai Rest API"""
     
-    def __init__(self, apikey=None, host='https://api.gavagai.se', api_version='v3'):
+    def __init__(self, apikey=None, host='https://api.gavagai.se', api_version='v3', **kwargs):
         super(GavagaiClient, self).__init__()
         self.apikey = apikey
         self.host = host
         self.api_version = api_version
+        self.default_request_options = kwargs
         if not self.apikey:
             try:
                 self.apikey = os.environ['GAVAGAI_APIKEY']
@@ -26,7 +27,7 @@ class GavagaiClient(object):
         path = path.strip('/')
         url = self.base_url() + '/' + path + '?apiKey=' + self.apikey
 
-        res = requests.request(method, url, json=body, allow_redirects=allow_redirects)
+        res = requests.request(method, url, json=body, allow_redirects=allow_redirects, **self.default_request_options)
         if res.status_code < 200 or res.status_code > 206:
             message = res.text or 'Unable to complete HTTP request'
             raise GavagaiHttpException(res.status_code, message)
@@ -53,7 +54,6 @@ class GavagaiClient(object):
         response = self.resource_request('/tonality', texts, **kwargs)
         response.simple_list = types.MethodType(map_text_tonalities, response) # monkey patch this instance
         return response
-
 
 
 def ensure_text_objects(texts):

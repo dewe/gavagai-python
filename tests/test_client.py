@@ -44,3 +44,9 @@ def test_no_apikey():
     with pytest.raises(GavagaiException):
         GavagaiClient()
     os.environ['GAVAGAI_APIKEY'] = old_apikey;
+
+
+def test_request_kwargs():
+    client = GavagaiClient('x', api_version='v5', default_option='foo')
+    print(client.default_request_options)
+    assert 'default_option' in client.default_request_options
