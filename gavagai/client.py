@@ -9,11 +9,9 @@ class GavagaiClient(object):
     
     def __init__(self, apikey=None, host='https://api.gavagai.se', api_version='v3'):
         super(GavagaiClient, self).__init__()
-
         self.apikey = apikey
         self.host = host
         self.api_version = api_version
-
         if not self.apikey:
             try:
                 self.apikey = os.environ['GAVAGAI_APIKEY']
@@ -32,43 +30,30 @@ class GavagaiClient(object):
         if res.status_code < 200 or res.status_code > 206:
             message = res.text or 'Unable to complete HTTP request'
             raise GavagaiHttpException(res.status_code, message)
-        
         return res
+
+    def resource_request(self, resource_name, texts, **kwargs):
+        if not isinstance(texts, list):
+            raise ValueError('Argument texts is expected to be a list.')
+        body = dict(language='en') 
+        body.update(kwargs)
+        body['texts'] = ensure_text_objects(texts)
+        return self.request(resource_name, 'post', body)
     
     def keywords(self, texts, **kwargs):
-        if not isinstance(texts, list):
-            raise ValueError('Argument texts is expected to be a list.')
-        body = dict(language='en') 
-        body.update(kwargs)
-        body['texts'] = ensure_text_objects(texts)
-        return self.request('/keywords', 'post', body)
+        return self.resource_request('/keywords', texts, **kwargs)
 
     def stories(self, texts, **kwargs):
-        if not isinstance(texts, list):
-            raise ValueError('Argument texts is expected to be a list.')
-        body = dict(language='en') 
-        body.update(kwargs)
-        body['texts'] = ensure_text_objects(texts)
-        return self.request('/stories', 'post', body)
+        return self.resource_request('/stories', texts, **kwargs)
+
+    def topics(self, texts, **kwargs):
+        return self.resource_request('/topics', texts, **kwargs)
 
     def tonality(self, texts, **kwargs):
-        if not isinstance(texts, list):
-            raise ValueError('Argument texts is expected to be a list.')
-        body = dict(language='en') 
-        body.update(kwargs)
-        body['texts'] = ensure_text_objects(texts)
-
-        response = self.request('/tonality', 'post', body)
+        response = self.resource_request('/tonality', texts, **kwargs)
         response.simple_list = types.MethodType(map_text_tonalities, response) # monkey patch this instance
         return response
 
-    def topics(self, texts, **kwargs):
-        if not isinstance(texts, list):
-            raise ValueError('Argument texts is expected to be a list.')
-        body = dict(language='en') 
-        body.update(kwargs)
-        body['texts'] = ensure_text_objects(texts)
-        return self.request('/topics', 'post', body)
 
 
 def ensure_text_objects(texts):
