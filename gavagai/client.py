@@ -41,7 +41,7 @@ class GavagaiClient(object):
         body = dict(language='en') 
         body.update(kwargs)
         body['texts'] = ensure_text_objects(texts)
-        return self.request('keywords', 'post', body)
+        return self.request('/keywords', 'post', body)
 
     def tonality(self, texts, **kwargs):
         if not isinstance(texts, list):
@@ -50,9 +50,17 @@ class GavagaiClient(object):
         body.update(kwargs)
         body['texts'] = ensure_text_objects(texts)
 
-        response = self.request('tonality', 'post', body)
+        response = self.request('/tonality', 'post', body)
         response.simple_list = types.MethodType(map_text_tonalities, response) # monkey patch this instance
         return response
+
+    def topics(self, texts, **kwargs):
+        if not isinstance(texts, list):
+            raise ValueError('Argument texts is expected to be a list.')
+        body = dict(language='en') 
+        body.update(kwargs)
+        body['texts'] = ensure_text_objects(texts)
+        return self.request('/topics', 'post', body)
 
 
 def ensure_text_objects(texts):
