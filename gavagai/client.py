@@ -66,8 +66,8 @@ def ensure_text_objects(texts):
     return text_objects
 
 
-def map_text_tonalities(self):
-    data = self.json()
+def map_text_tonalities(response):
+    data = response.json()
     return [map_tonality_to_dict(text) for text in data['texts']]
 
 
