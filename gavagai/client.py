@@ -35,7 +35,7 @@ class GavagaiClient(object):
             raise GavagaiHttpException(res.status_code, message)
         return res
 
-    def resource_request(self, resource_name, texts, **kwargs):
+    def _resource_request(self, resource_name, texts, **kwargs):
         if not isinstance(texts, list):
             raise ValueError('Argument texts is expected to be a list.')
         body = dict(language='en') 
@@ -44,24 +44,23 @@ class GavagaiClient(object):
         return self.request(resource_name, 'post', body)
     
     def keywords(self, texts, **kwargs):
-        return self.resource_request('/keywords', texts, **kwargs)
+        return self._resource_request('/keywords', texts, **kwargs)
 
     def stories(self, texts, **kwargs):
-        return self.resource_request('/stories', texts, **kwargs)
+        return self._resource_request('/stories', texts, **kwargs)
 
     def topics(self, texts, **kwargs):
-        return self.resource_request('/topics', texts, **kwargs)
+        return self._resource_request('/topics', texts, **kwargs)
 
     def tonality(self, texts, **kwargs):
-        response = self.resource_request('/tonality', texts, **kwargs)
+        response = self._resource_request('/tonality', texts, **kwargs)
         response.simple_list = types.MethodType(map_text_tonalities, response) # monkey patch this instance
         return response
 
 
 def ensure_text_objects(texts):
     text_objects = texts[:]
-    for i in range(len(text_objects)):
-        text = text_objects[i]
+    for i, text in enumerate(text_objects):
         if isinstance(text, unicode) or isinstance(text, basestring):
             text_objects[i] = { 'id': unicode(i), 'body': unicode(text) }
     return text_objects
