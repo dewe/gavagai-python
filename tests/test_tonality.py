@@ -7,14 +7,19 @@ from gavagai.client import GavagaiClient
 
 @pytest.fixture
 def client(request):
+    dir = os.path.dirname(__file__)
+    with open(os.path.join(dir, 'data/tonality_response.json')) as json_file:
+        data = json_file.read()
+
     httpretty.enable()
     httpretty.register_uri(httpretty.POST, 'https://api.gavagai.se/v3/tonality',
-                           body='{"foo": "bar"}', 
+                           body=data, 
                            content_type='application/json')
     def client_teardown():
         httpretty.disable()
         httpretty.reset()
-    request.addfinalizer(client_teardown)    
+    request.addfinalizer(client_teardown)
+
     return GavagaiClient('foo')
 
 

@@ -1,6 +1,5 @@
 import os
 import requests
-from urlparse import urljoin
 from exceptions import GavagaiException, GavagaiHttpException
 
 
