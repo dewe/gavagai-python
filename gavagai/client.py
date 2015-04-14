@@ -1,15 +1,7 @@
 import os
+import types
 import requests
 from exceptions import GavagaiException, GavagaiHttpException
-
-
-def ensure_text_objects(texts):
-    text_objects = texts[:]
-    for i in range(len(text_objects)):
-        text = text_objects[i]
-        if isinstance(text, unicode) or isinstance(text, basestring):
-            text_objects[i] = { 'id': unicode(i), 'body': unicode(text) }
-    return text_objects
 
 
 class GavagaiClient(object):
@@ -57,4 +49,29 @@ class GavagaiClient(object):
         body = dict(language='en') 
         body.update(kwargs)
         body['texts'] = ensure_text_objects(texts)
-        return self.request('tonality', 'post', body)
+
+        response = self.request('tonality', 'post', body)
+        response.simple_list = types.MethodType(map_text_tonalities, response) # monkey patch this instance
+        return response
+
+
+def ensure_text_objects(texts):
+    text_objects = texts[:]
+    for i in range(len(text_objects)):
+        text = text_objects[i]
+        if isinstance(text, unicode) or isinstance(text, basestring):
+            text_objects[i] = { 'id': unicode(i), 'body': unicode(text) }
+    return text_objects
+
+
+def map_text_tonalities(self):
+    data = self.json()
+    return [map_tonality_to_dict(text) for text in data['texts']]
+
+
+def map_tonality_to_dict(text):
+    scores = lambda t: {'score':t['score'], 'normalized_score':t['normalizedScore']}
+    tonality = {t['tone']:scores(t) for t in text['tonality']}
+    return dict(id=text['id'], tonality=tonality)
+
+
