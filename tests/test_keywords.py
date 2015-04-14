@@ -8,14 +8,14 @@ from gavagai.client import GavagaiClient
 @pytest.fixture
 def client(request):
     httpretty.enable()
-    httpretty.register_uri(httpretty.POST, 'https://api.gavagai.se/v3/keywords',
+    httpretty.register_uri(httpretty.POST, 'http://api.local/v3/keywords',
                            body='{"foo": "bar"}', 
                            content_type='application/json')
     def client_teardown():
         httpretty.disable()
         httpretty.reset()
     request.addfinalizer(client_teardown)    
-    return GavagaiClient('foo')
+    return GavagaiClient('foo', host='http://api.local')
 
 
 @pytest.fixture

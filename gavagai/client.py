@@ -3,6 +3,8 @@ import types
 import requests
 from exceptions import GavagaiException, GavagaiHttpException
 
+import urllib3.contrib.pyopenssl
+urllib3.contrib.pyopenssl.inject_into_urllib3()
 
 class GavagaiClient(object):
     """Client for Gavagai Rest API"""

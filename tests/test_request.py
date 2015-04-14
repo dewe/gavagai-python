@@ -7,11 +7,11 @@ from gavagai.exceptions import GavagaiHttpException
 
 @httpretty.activate
 def test_post_request():
-    httpretty.register_uri(httpretty.POST, 'https://api.gavagai.se/v3/test',
+    httpretty.register_uri(httpretty.POST, 'http://api.local/v3/test',
                            body='{"hello": "world"}', 
                            content_type='application/json')
-    client = GavagaiClient('foo')
-    response = client.request('test', method='POST', body={'test':'value'})
+    client = GavagaiClient('foo', host='http://api.local')
+    response = client.request('/test', method='POST', body={'test':'value'})
     assert response.json() == {'hello': 'world'}
     assert httpretty.last_request().method == 'POST'
     assert httpretty.last_request().headers['content-type'] == 'application/json'
@@ -20,16 +20,16 @@ def test_post_request():
 
 @httpretty.activate
 def test_default_method_post():
-    httpretty.register_uri(httpretty.POST, 'https://api.gavagai.se/v3/test')
-    client = GavagaiClient('foo')
+    httpretty.register_uri(httpretty.POST, 'http://api.local/v3/test')
+    client = GavagaiClient('foo', host='http://api.local')
     client.request('test')
     assert httpretty.last_request().method == 'POST'
 
 
 @httpretty.activate
 def test_path_with_slashes():
-    httpretty.register_uri(httpretty.POST, 'https://api.gavagai.se/v3/test')
-    client = GavagaiClient('foo')
+    httpretty.register_uri(httpretty.POST, 'http://api.local/v3/test')
+    client = GavagaiClient('foo', host='http://api.local')
     path = '/test/'
     response = client.request(path)
     assert response.status_code == 200
@@ -37,16 +37,16 @@ def test_path_with_slashes():
 
 @httpretty.activate
 def test_empty_response():
-    httpretty.register_uri(httpretty.GET, 'https://api.gavagai.se/v3/test', status=204)
-    client = GavagaiClient('foo')
+    httpretty.register_uri(httpretty.GET, 'http://api.local/v3/test', status=204)
+    client = GavagaiClient('foo', host='http://api.local')
     response = client.request('test', method='get')
     assert response.status_code == 204
 
 
 @httpretty.activate
 def test_raise_exception_on_300_range_status():
-    httpretty.register_uri(httpretty.GET, 'https://api.gavagai.se/v3/test', status=302)
-    client = GavagaiClient('foo')
+    httpretty.register_uri(httpretty.GET, 'http://api.local/v3/test', status=302)
+    client = GavagaiClient('foo', host='http://api.local')
     with pytest.raises(GavagaiHttpException) as excinfo:
         client.request('test', method='get')
     assert excinfo.value.status_code == 302
@@ -54,11 +54,11 @@ def test_raise_exception_on_300_range_status():
 
 @httpretty.activate
 def test_raise_exception_on_400_range_status():
-    httpretty.register_uri(httpretty.GET, 'https://api.gavagai.se/v3/test', status=401, 
+    httpretty.register_uri(httpretty.GET, 'http://api.local/v3/test', status=401, 
                            body='{"message": "fake api error message"}',
                            content_type='application/json')
 
-    client = GavagaiClient('foo')
+    client = GavagaiClient('foo', host='http://api.local')
     with pytest.raises(GavagaiHttpException) as excinfo:
         client.request('test', method='get')
     assert excinfo.value.message == '{"message": "fake api error message"}'
@@ -67,11 +67,11 @@ def test_raise_exception_on_400_range_status():
 
 @httpretty.activate
 def test_raise_exception_on_500_range_status():
-    httpretty.register_uri(httpretty.GET, 'https://api.gavagai.se/v3/test', status=502, 
+    httpretty.register_uri(httpretty.GET, 'http://api.local/v3/test', status=502, 
                            body='Fake bad gateway error',
                            content_type='text/plain')
 
-    client = GavagaiClient('foo')
+    client = GavagaiClient('foo', host='http://api.local')
     with pytest.raises(GavagaiHttpException) as excinfo:
         client.request('test', method='get')
     assert excinfo.value.status_code == 502
@@ -80,8 +80,8 @@ def test_raise_exception_on_500_range_status():
 
 @httpretty.activate
 def test_default_exception_message_if_empty_error_message_from_api():
-    httpretty.register_uri(httpretty.GET, 'https://api.gavagai.se/v3/test', status=500, body=None)
-    client = GavagaiClient('foo')
+    httpretty.register_uri(httpretty.GET, 'http://api.local/v3/test', status=500, body=None)
+    client = GavagaiClient('foo', host='http://api.local')
     with pytest.raises(GavagaiHttpException) as excinfo:
         client.request('test', method='get')
     assert excinfo.value.status_code == 500

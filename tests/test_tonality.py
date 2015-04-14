@@ -12,7 +12,7 @@ def client(request):
         data = json_file.read()
 
     httpretty.enable()
-    httpretty.register_uri(httpretty.POST, 'https://api.gavagai.se/v3/tonality',
+    httpretty.register_uri(httpretty.POST, 'http://api.local/v3/tonality',
                            body=data, 
                            content_type='application/json')
     def client_teardown():
@@ -20,7 +20,7 @@ def client(request):
         httpretty.reset()
     request.addfinalizer(client_teardown)
 
-    return GavagaiClient('foo')
+    return GavagaiClient('foo', host='http://api.local')
 
 
 @pytest.fixture
@@ -70,7 +70,7 @@ def test_custom_options_as_dictionary(client, texts):
     assert request_body['anotherOption'] == 4711
 
 
-def test_throw_if_texts_not_a_list(client):
+def test_throw_if_texts_argument_not_a_list(client):
     with pytest.raises(ValueError):
         client.tonality('this is not a list')
 
