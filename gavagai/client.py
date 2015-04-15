@@ -72,8 +72,10 @@ def map_text_tonalities(response):
 
 
 def map_tonality_to_dict(text):
-    scores = lambda t: {'score':t['score'], 'normalized_score':t['normalizedScore']}
-    tonality = {t['tone']:scores(t) for t in text['tonality']}
+    scores = lambda x: dict(score=x['score'], normalized_score=x['normalizedScore'])
+    name = lambda x: x['tone']
+    tonality = {name(t):scores(t) for t in text['tonality']}
     return dict(id=text['id'], tonality=tonality)
+
 
 
