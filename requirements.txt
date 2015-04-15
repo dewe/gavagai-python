@@ -1,4 +1,19 @@
-httpretty==0.8.8
-py==1.4.26
-pytest==2.6.4
-requests==2.6.0
+
+-e .
+
+# cffi==0.9.2
+# cryptography==0.8.2
+# enum34==1.0.4
+# -e git+git@github.com:dewe/gavagai-python.git@7b07556cdae7bea5ba3aa7816c1e612c56b2a7ba#egg=gavagai-master
+# httpretty==0.8.8
+# ndg-httpsclient==0.3.3
+# py==1.4.26
+# pyasn1==0.1.7
+# pycparser==2.10
+# pyOpenSSL==0.14
+# pytest==2.6.4
+# requests==2.6.0
+# six==1.9.0
+# urllib3==1.10.2
+pytest
+httpretty
