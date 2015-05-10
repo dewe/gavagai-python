@@ -41,7 +41,7 @@ class GavagaiClient(object):
             raise GavagaiHttpException(res.status_code, message)
         return res
 
-    def _resource_request(self, resource_name, texts, **kwargs):
+    def _byod_request(self, resource_name, texts, **kwargs):
         if not isinstance(texts, list):
             raise ValueError('Argument texts is expected to be a list.')
         body = dict(language='en')
@@ -49,17 +49,23 @@ class GavagaiClient(object):
         body['texts'] = ensure_text_objects(texts)
         return self.request(resource_name, 'post', body)
 
+    def lexicon(self, term, language='en'):
+        if not isinstance(term, str):
+            raise ValueError('Argument term is expected to be a string.')
+        path = '/lexicon/{0}/{1}'.format(language, term)
+        return self.request(path, 'get')
+
     def keywords(self, texts, **kwargs):
-        return self._resource_request('/keywords', texts, **kwargs)
+        return self._byod_request('/keywords', texts, **kwargs)
 
     def stories(self, texts, **kwargs):
-        return self._resource_request('/stories', texts, **kwargs)
+        return self._byod_request('/stories', texts, **kwargs)
 
     def topics(self, texts, **kwargs):
-        return self._resource_request('/topics', texts, **kwargs)
+        return self._byod_request('/topics', texts, **kwargs)
 
     def tonality(self, texts, **kwargs):
-        response = self._resource_request('/tonality', texts, **kwargs)
+        response = self._byod_request('/tonality', texts, **kwargs)
         # monkey patch this instance
         response.simple_list = types.MethodType(map_text_tonalities, response)
         return response
