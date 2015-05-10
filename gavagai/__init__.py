@@ -1,4 +1,4 @@
-"""A Gavagai Rest API helper library."""
+"""A Gavagai API helper library."""
 
 __version__ = '0.2.1'
 __url__ = 'https://github.com/dewe/gavagai-python'

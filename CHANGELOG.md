@@ -1,6 +1,6 @@
 # [Changelog](https://github.com/dewe/gavagai-python/releases)
 
-## [0.2.0](https://github.com/dewe/gavagai-python/compare/0.1.0...0.2.0)
+## [0.2.2](https://github.com/dewe/gavagai-python/compare/0.1.0...0.2.2)
 
 * Added the new /lexicon api.
 
