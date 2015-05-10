@@ -12,10 +12,19 @@ Get your own api key for free at [Gavagai Developer Portal](https://developer.ga
 
 The api key can be specified when instantiating the client, see examples below. Alternatively, you can set the GAVAGAI_APIKEY environment variable, and just call `GavagaiClient()`.
 
+
+## API methods
+Gavagai Rest API methods supported by this version:
+
+* [Keywords]() - Extract salient concepts from a collection of texts.
+* [Lexicon]() - look up a word in [Gavagai Living Lexicon](http://lexicon.gavagai.se/lookup/en/python).
+* [Tonality]() - Multidimensional sentiment analysis.
+* [Topics]() & [Stories]() - Multi-text summarization: get the gist of your text collection without having to read through every single sentence.
+
 ## Use
 See [Gavagai API documentation](https://developer.gavagai.se/docs) for details about available API resources.
 
-### Straight API call
+### Example: API call on a set of texts
 The `/keywords` resource extracts salient concepts from a collection of texts. Order by number of occurrences.
 
 ```python
@@ -35,9 +44,10 @@ keywords = result.json()
 pprint(keywords)
 ```
 
-### API call with additional options
 
-The `/tonality` resource measures multi-dimensional sentiment, based on lexical analysis. For accuracy, language should be specified.
+### Example: API call with language specified
+
+The `/tonality` resource measures multi-dimensional sentiment, based on lexical analysis. Default language is English, but for texts in other languages, the language option should be specified.
 
 ```python
 rom gavagai.client import GavagaiClient
@@ -46,7 +56,7 @@ from pprint import pprint
 texts = [u'Din idiot!', u'Jag älskar dig.', u'Hen hatar det.']
 
 client = GavagaiClient('use_your_own_api_key')
-result = client.tonality(texts, language='sv')
+result = client.tonality(texts, language='sv') # swedish language option
 keywords = result.json()
 
 pprint(keywords)
