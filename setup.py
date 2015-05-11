@@ -1,19 +1,13 @@
-import io
-import re
 from setuptools import setup
-
-init_py = io.open('gavagai/__init__.py').read()
-metadata = dict(re.findall("__([a-z]+)__ = '([^']+)'", init_py))
-metadata['doc'] = re.findall('"""(.+)"""', init_py)[0]
 
 setup(
     name='gavagai',
     packages=['gavagai'],
-    version=metadata['version'],
-    description=metadata['doc'],
-    author=metadata['author'],
-    author_email=metadata['email'],
-    url=metadata['url'],
+    version='0.2.3',
+    description='A Gavagai API helper library.',
+    author='Johan Dewe',
+    author_email='johan@dewe.net',
+    url='https://github.com/dewe/gavagai-python',
     keywords = ['text-analysis', 'api', 'nlp'], 
     license='The MIT License (MIT)',
     install_requires=[

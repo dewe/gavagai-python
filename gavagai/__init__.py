@@ -1,6 +1,3 @@
-"""A Gavagai API helper library."""
+import pkg_resources
 
-__version__ = '0.2.3'
-__url__ = 'https://github.com/dewe/gavagai-python'
-__author__ = 'Johan Dewe'
-__email__ = 'johan@dewe.net'
+__version__ = pkg_resources.get_distribution("zest.releaser").version
