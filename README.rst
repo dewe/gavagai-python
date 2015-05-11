@@ -38,6 +38,7 @@ Use
 See `Gavagai API documentation <https://developer.gavagai.se/docs>`__
 for details about available API resources.
 
+
 Example: API call on a set of texts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -61,6 +62,7 @@ of texts. Order by number of occurrences.
 
     pprint(keywords)
 
+
 Example: API call with language specified
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -81,6 +83,7 @@ languages, the language option should be specified.
 
     pprint(keywords)
 
+
 Set up for development
 ----------------------
 
@@ -90,12 +93,14 @@ From root of this repository:
 
     $ pip install -r requirements.txt
 
+
 Run tests
 ---------
 
 .. code:: bash
 
     $ py.test
+
 
 Releasing
 ---------
