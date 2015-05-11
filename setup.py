@@ -7,7 +7,7 @@ metadata = dict(re.findall("__([a-z]+)__ = '([^']+)'", init_py))
 metadata['doc'] = re.findall('"""(.+)"""', init_py)[0]
 
 setup(
-    name='Gavagai',
+    name='gavagai',
     packages=['gavagai'],
     version=metadata['version'],
     description=metadata['doc'],
