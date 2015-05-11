@@ -105,4 +105,4 @@ Run tests
 Releasing
 ---------
 
-I use `zest.releaser <hhttps://pypi.python.org/pypi/zest.releaser>`__ for releasing this package.
+I use `zest.releaser <https://pypi.python.org/pypi/zest.releaser>`__ for releasing this package.
