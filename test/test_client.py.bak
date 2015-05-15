@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-from __future__ import print_function
 import os
 import pytest
 from gavagai.client import GavagaiClient
@@ -50,5 +48,5 @@ def test_no_apikey():
 
 def test_request_kwargs():
     client = GavagaiClient('x', api_version='v5', default_option='foo')
-    print((client.default_request_options))
+    print(client.default_request_options)
     assert 'default_option' in client.default_request_options

@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
 import os
 import json
 import requests
@@ -65,7 +64,7 @@ def get_swagger_json(prop, url):
 
     swagger = res.json()
     swagger_parameters = swagger['apis'][0]['operations'][0]['parameters']
-    body_params = [p for p in swagger_parameters if p['paramType'] == 'body']
+    body_params = filter(lambda p: p['paramType'] == 'body', swagger_parameters)
     sample_body = body_params[0]['defaultValue']
     
     result = json.loads(sample_body)[prop]

@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import os
 import json
 import pytest
@@ -85,7 +84,7 @@ def test_return_tonality_dictionary_json_from_response(client):
     tonality = texts[0]['tonality']
     assert tonality['positivity']['score'] == 9
     assert tonality['positivity']['normalized_score'] == 0.75
-    assert list(tonality.keys()) == ['desire', 'love', 'positivity', 'violence', 
+    assert tonality.keys() == ['desire', 'love', 'positivity', 'violence', 
                                'skepticism', 'hate', 'fear', 'negativity']
 
 

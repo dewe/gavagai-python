@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import os
 import json
 import pytest
@@ -9,7 +8,7 @@ from gavagai.client import GavagaiClient
 @pytest.fixture
 def client(request):
     httpretty.enable()
-    httpretty.register_uri(httpretty.POST, 'http://api.local/v3/topics',
+    httpretty.register_uri(httpretty.POST, 'http://api.local/v3/stories',
                            body='{"foo": "bar"}', 
                            content_type='application/json')
     def client_teardown():
@@ -28,13 +27,13 @@ def texts():
 
 
 def test_default_language(client, texts):
-    client.topics(texts)
+    client.stories(texts)
     request = httpretty.last_request()
     assert '"language": "en"' in request.body
 
 
 def test_input_list_of_text_objects(client, texts):
-    client.topics(texts)
+    client.stories(texts)
     body = json.loads(httpretty.last_request().body)
     text_objects = body['texts']
     assert isinstance(text_objects, list)
@@ -43,13 +42,13 @@ def test_input_list_of_text_objects(client, texts):
 
 
 def test_input_list_of_strings(client):
-    client.topics(['this is a text', 'this is text 2', 'this is the third text'])
+    client.stories(['this is a text', 'this is text 2', 'this is the third text'])
     body = json.loads(httpretty.last_request().body)
     assert body['texts'][2]['body'] == 'this is the third text'
 
 
 def test_custom_options_as_arguments(client, texts):
-    client.topics(texts, language='sv', myCustomOption='optionally optional')    
+    client.stories(texts, language='sv', myCustomOption='optionally optional')    
     body = json.loads(httpretty.last_request().body)
     assert body['language'] == 'sv'
     assert body['myCustomOption'] == 'optionally optional' 
@@ -60,7 +59,7 @@ def test_custom_options_as_dictionary(client, texts):
         'anotherOption': 4711,
         'language': 'no'
     }
-    client.topics(texts, **options)    
+    client.stories(texts, **options)    
     body = json.loads(httpretty.last_request().body)
     assert body['language'] == 'no'
     assert body['anotherOption'] == 4711
@@ -68,4 +67,4 @@ def test_custom_options_as_dictionary(client, texts):
 
 def test_throw_if_texts_argument_not_a_list(client):
     with pytest.raises(ValueError):
-        client.topics('this is not a list')
+        client.stories('this is not a list')
