@@ -2,11 +2,11 @@ from __future__ import absolute_import
 import os
 import types
 import requests
+import six
 from .exceptions import GavagaiException, GavagaiHttpException
 
-import urllib3.contrib.pyopenssl
-import six
-urllib3.contrib.pyopenssl.inject_into_urllib3()
+#import urllib3.contrib.pyopenssl
+#urllib3.contrib.pyopenssl.inject_into_urllib3()
 
 
 class GavagaiClient(object):
