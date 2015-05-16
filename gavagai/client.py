@@ -1,10 +1,9 @@
+from __future__ import absolute_import
 import os
 import types
 import requests
-from exceptions import GavagaiException, GavagaiHttpException
-
-import urllib3.contrib.pyopenssl
-urllib3.contrib.pyopenssl.inject_into_urllib3()
+import six
+from .exceptions import GavagaiException, GavagaiHttpException
 
 
 class GavagaiClient(object):
@@ -74,8 +73,8 @@ class GavagaiClient(object):
 def ensure_text_objects(texts):
     text_objects = texts[:]
     for i, text in enumerate(text_objects):
-        if isinstance(text, unicode) or isinstance(text, basestring):
-            text_objects[i] = {'id': unicode(i), 'body': unicode(text)}
+        if isinstance(text, six.text_type) or isinstance(text, six.string_types):
+            text_objects[i] = {'id': six.text_type(i), 'body': six.text_type(text)}
     return text_objects
 
 

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from setuptools import setup
 
 setup(
@@ -8,11 +9,13 @@ setup(
     author='Johan Dewe',
     author_email='johan@dewe.net',
     url='https://github.com/dewe/gavagai-python',
-    keywords = ['text-analysis', 'api', 'nlp'], 
+    keywords=['text-analysis', 'api', 'nlp'], 
+    classifiers=['Programming Language :: Python :: 2.7',
+                 'Programming Language :: Python :: 3.3'],
     license='The MIT License (MIT)',
     install_requires=[
         'requests>=2.7.0,<3.0',
-        'urllib3',
-        'ndg-httpsclient',
+        'six==1.9.0',
+        'ndg-httpsclient==0.4.0',
     ]
 )

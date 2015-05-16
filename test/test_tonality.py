@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import os
 import json
 import pytest
@@ -34,12 +35,12 @@ def texts():
 def test_default_language(client, texts):
     client.tonality(texts)
     request = httpretty.last_request()
-    assert '"language": "en"' in request.body
+    assert '"language": "en"' in request.body.decode('utf-8')
 
 
 def test_input_list_of_text_objects(client, texts):
     client.tonality(texts)
-    request_body = json.loads(httpretty.last_request().body)
+    request_body = json.loads(httpretty.last_request().body.decode('utf-8'))
     text_objects = request_body['texts']
     assert isinstance(text_objects, list)
     assert 'id' in text_objects[0]
@@ -48,13 +49,13 @@ def test_input_list_of_text_objects(client, texts):
 
 def test_input_list_of_strings(client):
     client.tonality(['this is a text', 'this is text 2', 'this is the third text'])
-    request_body = json.loads(httpretty.last_request().body)
+    request_body = json.loads(httpretty.last_request().body.decode('utf-8'))
     assert request_body['texts'][2]['body'] == 'this is the third text'
 
 
 def test_custom_options_as_arguments(client, texts):
     client.tonality(texts, language='sv', myCustomOption='optionally optional')    
-    request_body = json.loads(httpretty.last_request().body)
+    request_body = json.loads(httpretty.last_request().body.decode('utf-8'))
     assert request_body['language'] == 'sv'
     assert request_body['myCustomOption'] == 'optionally optional' 
 
@@ -65,7 +66,7 @@ def test_custom_options_as_dictionary(client, texts):
         'language': 'no'
     }
     client.tonality(texts, **options)    
-    request_body = json.loads(httpretty.last_request().body)
+    request_body = json.loads(httpretty.last_request().body.decode('utf-8'))
     assert request_body['language'] == 'no'
     assert request_body['anotherOption'] == 4711
 
@@ -84,7 +85,8 @@ def test_return_tonality_dictionary_json_from_response(client):
     tonality = texts[0]['tonality']
     assert tonality['positivity']['score'] == 9
     assert tonality['positivity']['normalized_score'] == 0.75
-    assert tonality.keys() == ['desire', 'love', 'positivity', 'violence', 
-                               'skepticism', 'hate', 'fear', 'negativity']
+    assert list(sorted(tonality.keys())) == ['desire', 'fear', 'hate', 'love', 
+                                             'negativity', 'positivity', 
+                                             'skepticism','violence']
 
 
