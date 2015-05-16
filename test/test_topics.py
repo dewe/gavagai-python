@@ -30,12 +30,12 @@ def texts():
 def test_default_language(client, texts):
     client.topics(texts)
     request = httpretty.last_request()
-    assert '"language": "en"' in request.body
+    assert '"language": "en"' in request.body.decode('utf-8')
 
 
 def test_input_list_of_text_objects(client, texts):
     client.topics(texts)
-    body = json.loads(httpretty.last_request().body)
+    body = json.loads(httpretty.last_request().body.decode('utf-8'))
     text_objects = body['texts']
     assert isinstance(text_objects, list)
     assert 'id' in text_objects[0]
@@ -44,13 +44,13 @@ def test_input_list_of_text_objects(client, texts):
 
 def test_input_list_of_strings(client):
     client.topics(['this is a text', 'this is text 2', 'this is the third text'])
-    body = json.loads(httpretty.last_request().body)
+    body = json.loads(httpretty.last_request().body.decode('utf-8'))
     assert body['texts'][2]['body'] == 'this is the third text'
 
 
 def test_custom_options_as_arguments(client, texts):
     client.topics(texts, language='sv', myCustomOption='optionally optional')    
-    body = json.loads(httpretty.last_request().body)
+    body = json.loads(httpretty.last_request().body.decode('utf-8'))
     assert body['language'] == 'sv'
     assert body['myCustomOption'] == 'optionally optional' 
 
@@ -61,7 +61,7 @@ def test_custom_options_as_dictionary(client, texts):
         'language': 'no'
     }
     client.topics(texts, **options)    
-    body = json.loads(httpretty.last_request().body)
+    body = json.loads(httpretty.last_request().body.decode('utf-8'))
     assert body['language'] == 'no'
     assert body['anotherOption'] == 4711
 
