@@ -3,6 +3,8 @@ gavagai-python
 
 A `Gavagai <http://www.gavagai.se>`__ API helper library.
 
+.. image:: https://travis-ci.org/dewe/gavagai-python.svg?branch=master
+
 Install
 -------
 
