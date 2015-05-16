@@ -4,7 +4,7 @@ from setuptools import setup
 setup(
     name='gavagai',
     packages=['gavagai'],
-    version='0.2.7.dev0',
+    version='0.2.7',
     description='A Gavagai API helper library.',
     author='Johan Dewe',
     author_email='johan@dewe.net',

@@ -1,4 +1,4 @@
-0.2.7 (unreleased)
+0.2.7 (2015-05-16)
 ------------------
 
 * Now supporting both Python 2.7 and Python 3.3.
