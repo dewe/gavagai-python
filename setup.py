@@ -15,7 +15,7 @@ setup(
     license='The MIT License (MIT)',
     install_requires=[
         'requests>=2.7.0,<3.0',
-        'urllib3',
-        'ndg-httpsclient',
+        'six==1.9.0',
+        'ndg-httpsclient==0.4.0',
     ]
 )
