@@ -1,8 +1,7 @@
 0.2.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+* Now supporting both Python 2.7 and Python 3.3.
 
 0.2.6 (2015-05-11)
 ------------------
